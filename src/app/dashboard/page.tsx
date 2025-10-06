@@ -1,10 +1,10 @@
 'use client';
 
-import React from 'react';
+import React, { Suspense } from 'react';
 import ScheduleSummary from '@/components/ScheduleSummary';
 import { useSearchParams } from 'next/navigation';
 
-export default function Dashboard() {
+function DashboardContent() {
   const searchParams = useSearchParams();
   const summary = searchParams.get('summary');
   const loading = searchParams.get('loading') === 'true';
@@ -32,5 +32,13 @@ export default function Dashboard() {
         <ScheduleSummary summary={displaySummary} />
       </div>
     </div>
+  );
+}
+
+export default function Dashboard() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-gray-50 flex items-center justify-center"><div className="text-center"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto mb-4"></div><p className="text-gray-600">Loading your schedule...</p></div></div>}>
+      <DashboardContent />
+    </Suspense>
   );
 }
